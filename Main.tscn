@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Elefante_Teste.tscn" type="PackedScene" id=1]
+
+[node name="Main" type="Node2D"]
+
+[node name="Mesa" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Elefante_Teste" parent="." instance=ExtResource( 1 )]
