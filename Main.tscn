@@ -1,11 +1,29 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Elefante_Teste.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Receptor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://codes/Main.gd" type="Script" id=3]
 
 [node name="Main" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="Mesa" type="TextureRect" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 
+[node name="Receptor" parent="." instance=ExtResource( 2 )]
+position = Vector2( 590, 309 )
+
 [node name="Elefante_Teste" parent="." instance=ExtResource( 1 )]
+position = Vector2( 272, 289 )
+
+[node name="TextDisplay" type="Label" parent="."]
+margin_right = 681.0
+margin_bottom = 40.0
+rect_scale = Vector2( 1.5, 1.5 )
+align = 1
+uppercase = true
+
+[node name="Timer" type="Timer" parent="TextDisplay"]
+
+[connection signal="timeout" from="TextDisplay/Timer" to="." method="_on_Timer_timeout"]
