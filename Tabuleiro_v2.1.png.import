@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/2d_cartoon_elephant.svg-3d41860296ca3d7bafbb3349d6096580.stex"
+path="res://.import/Tabuleiro_v2.1.png-d83f3487a13a5c36b0c4d0a06abe5e44.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Imagens_2d/2d_cartoon_elephant.svg"
-dest_files=[ "res://.import/2d_cartoon_elephant.svg-3d41860296ca3d7bafbb3349d6096580.stex" ]
+source_file="res://Tabuleiro_v2.1.png"
+dest_files=[ "res://.import/Tabuleiro_v2.1.png-d83f3487a13a5c36b0c4d0a06abe5e44.stex" ]
 
 [params]
 

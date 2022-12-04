@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/2d_cartoon_elephant_dark.png-ec1445c1205d0989063309d6ed26939c.stex"
+path="res://.import/objeto.png-49f16fd12aa52c121a77c2396ecef693.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Imagens_2d/2d_cartoon_elephant_dark.png"
-dest_files=[ "res://.import/2d_cartoon_elephant_dark.png-ec1445c1205d0989063309d6ed26939c.stex" ]
+source_file="res://animais/dinossauro/objeto.png"
+dest_files=[ "res://.import/objeto.png-49f16fd12aa52c121a77c2396ecef693.stex" ]
 
 [params]
 

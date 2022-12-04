@@ -1,21 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Elefante_Teste.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Receptor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://codes/Main.gd" type="Script" id=3]
+[ext_resource path="res://Tabuleiro_v2.1.png" type="Texture" id=4]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="Mesa" type="TextureRect" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="Mesa" type="Sprite" parent="."]
+position = Vector2( 1, 109 )
+texture = ExtResource( 4 )
+centered = false
 
 [node name="Receptor" parent="." instance=ExtResource( 2 )]
-position = Vector2( 590, 309 )
+visible = false
+position = Vector2( 626, 92 )
 
 [node name="Elefante_Teste" parent="." instance=ExtResource( 1 )]
-position = Vector2( 272, 289 )
+visible = false
+position = Vector2( 306, 96 )
 
 [node name="TextDisplay" type="Label" parent="."]
 margin_right = 681.0
@@ -25,5 +29,77 @@ align = 1
 uppercase = true
 
 [node name="Timer" type="Timer" parent="TextDisplay"]
+
+[node name="Pontuacao" type="Label" parent="."]
+margin_top = 546.0
+margin_right = 660.0
+margin_bottom = 560.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "0"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="SpawnTabuleiro" type="YSort" parent="."]
+
+[node name="Position2D" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 218, 246 )
+
+[node name="Position2D2" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 498, 252 )
+
+[node name="Position2D3" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 820, 243 )
+
+[node name="Position2D4" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 823, 342 )
+
+[node name="Position2D5" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 499, 344 )
+
+[node name="Position2D6" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 225, 350 )
+
+[node name="Position2D7" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 219, 444 )
+
+[node name="Position2D8" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 498, 443 )
+
+[node name="Position2D9" type="Position2D" parent="SpawnTabuleiro"]
+position = Vector2( 832, 443 )
+
+[node name="SpawnPecas" type="YSort" parent="."]
+
+[node name="Position2D" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 71, 198 )
+
+[node name="Position2D2" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 76, 307 )
+
+[node name="Position2D3" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 72, 449 )
+
+[node name="Position2D4" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 949, 184 )
+
+[node name="Position2D5" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 954, 312 )
+
+[node name="Position2D6" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 953, 431 )
+
+[node name="Position2D7" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 872, 550 )
+
+[node name="Position2D8" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 501, 543 )
+
+[node name="Position2D9" type="Position2D" parent="SpawnPecas"]
+position = Vector2( 215, 543 )
+
+[node name="Sombras" type="YSort" parent="."]
+
+[node name="Pecas" type="YSort" parent="."]
 
 [connection signal="timeout" from="TextDisplay/Timer" to="." method="_on_Timer_timeout"]
