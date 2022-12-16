@@ -30,9 +30,9 @@ func Deploy(pos, objName):
 	
 	collision.position = skin.position
 	
-	var spriteSize = skin.texture.get_size() * size * size * size
+	#var spriteSize = skin.texture.get_size() * size * size * size
 	#collision.shape.set_extents(spriteSize - Vector2(1, 1))
-	collision.shape.set_extents(spriteSize)
+	#collision.shape.set_extents(spriteSize)
 	
 	position = pos
 	return true

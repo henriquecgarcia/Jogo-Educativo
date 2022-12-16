@@ -91,11 +91,14 @@ func _ready():
 		spawned[r] = obj
 		c+=1
 		print(i)
-	#print("\n\n")
-	#for i in spawned:
-	#	print(i.get_objeto())
 	
-	#$Mesa.scale = Vector2(.65, .65)
+	#dir.queue_free()
+	var font = DynamicFont.new()
+	font.font_data = load("res://fonts/8bitOperatorPlus8.ttf")
+	font.size = 96
+	display.add_font_override("font", font)
+	display.rect_scale = Vector2(0.5, 0.5)
+	display.rect_size = display.rect_size * 2
 
 func set_display(texto):
 	display.self_modulate.a = 1
