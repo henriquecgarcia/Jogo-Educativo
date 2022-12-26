@@ -3,7 +3,6 @@ extends Area2D
 onready var collision = $CollisionShape2D
 onready var skin = $Sprite
 
-var mouseIn = false
 var objeto = "Sem Nome"
 var foundObj = null
 var placed = false

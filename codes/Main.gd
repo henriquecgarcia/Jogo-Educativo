@@ -2,12 +2,15 @@ extends Node2D
 
 onready var display = $TextDisplay
 onready var displayT = $TextDisplay/Timer
-onready var pontos = $Pontuacao
+onready var _pontos = $Pontuacao
 onready var sTabuleiro = $SpawnTabuleiro
 onready var sPecas = $SpawnPecas
 onready var tabuleiro = $Sombras
 onready var pecas = $Pecas
 onready var rng = RandomNumberGenerator.new()
+onready var _fulltime_player = $Constant_Player as AudioStreamPlayer2D
+onready var correct_player = $Correct_Player as AudioStreamPlayer2D
+onready var wrong_player = $Wrong_Player as AudioStreamPlayer2D
 
 const oCode = preload("res://scenes/Objeto_Base.tscn")
 const rCode = preload("res://scenes/Receptor_Base.tscn")
@@ -16,6 +19,8 @@ var animais = [ ]
 var spawned = [ ]
 var tSpawned = [ ]
 var clicked = null
+var held = [ ]
+var pontos : int = 0
 
 var first = true
 
@@ -57,14 +62,17 @@ func _ready():
 				continue
 			animais.append(file_name)
 	
-# warning-ignore:unused_variable
-	for i in range(sTabuleiro.get_child_count()): # Making sure that the size of the array is iqual the ammount of "spawns"
+	wrong_player.stream.loop = false
+	correct_player.stream.loop = false
+	_fulltime_player.stream.loop = true
+	_fulltime_player.play()
+	
+	for _i in range(sTabuleiro.get_child_count()): # Making sure that the size of the array is iqual the ammount of "spawns"
 		spawned.append(null)
 		tSpawned.append(null)
 	
 	var c = 0
 	
-	animais.shuffle()
 	animais.shuffle()
 	animais.shuffle()
 	
@@ -89,8 +97,11 @@ func _ready():
 			continue
 		tSpawned[t] = sombra
 		spawned[r] = obj
+		obj.connect("placed", self, "set_object_placed")
+		obj.connect("object_taken", self, "set_object_taken")
+		obj.connect("object_released", self, "set_object_released")
+		held.append({ objeto = i, obj = r, sombra = t, total_held = 0, _start = -1 })
 		c+=1
-		print(i)
 	
 	#dir.queue_free()
 	var font = DynamicFont.new()
@@ -99,6 +110,22 @@ func _ready():
 	display.add_font_override("font", font)
 	display.rect_scale = Vector2(0.5, 0.5)
 	display.rect_size = display.rect_size * 2
+	
+	
+	var f2 = DynamicFont.new()
+	f2.font_data = load("res://fonts/8bitOperatorPlus8.ttf")
+	f2.size = 96 * 2/3
+	_pontos.add_font_override("font", f2)
+	_pontos.rect_scale = Vector2(0.5, 0.5)
+	_pontos.rect_size *= 2
+	
+	_pontos.text = str(pontos)+" pontos"
+
+func object_position(obj = "Nenhum") -> int:
+	for i in range(len(held)):
+		if held[i].objeto == obj:
+			return i
+	return -1
 
 func set_display(texto):
 	display.self_modulate.a = 1
@@ -119,13 +146,64 @@ func _on_Timer_timeout():
 		display.text = ""
 		first = true
 
-func set_clicked(obj):
-	if not clicked == null:
+func set_object_taken(objeto):
+	var id = object_position(objeto)
+	if id < 0:
 		return
-	clicked = obj
+	var info = held[id]
+	if info._start != -1:
+		return
+	info._start = Time.get_ticks_msec()
 
-func get_clicked():
-	return clicked
+func set_object_released(objeto):
+	var id = object_position(objeto)
+	if id < 0:
+		return
+	var info = held[id]
+	if info._start == -1:
+		return
+	info.total_held += (Time.get_ticks_msec() - info._start)
+	info._start = -1
 
-func clear_clicked():
-	clicked = null
+func set_object_placed(objeto, shadow, correct):
+	if correct_player.playing:
+		correct_player.stop()
+	if wrong_player.playing:
+		wrong_player.stop()
+	if correct:
+		set_display(objeto.objeto)
+		var id = object_position(objeto.objeto)
+		if id < 0:
+			return
+		var info = held[id]
+		var p = info.total_held
+		
+		if p <= 30*1000:
+			p = 100
+		elif p <= 60*1000:
+			p = 75
+		else:
+			p = int(p/1000)
+			p = 100-p
+			if p < 10:
+				p = 10
+		
+		print(p, info.total_held)
+		
+		objeto.set_status("Connected")
+		objeto.position = shadow.position
+		correct_player.play(0.0)
+		
+		pontos += p
+		_pontos.text = str(pontos)+" pontos"
+	else:
+		objeto.position = objeto.original_pos
+		wrong_player.play(0.66)
+
+# Tendo a certeza q vai parar de tocar (eu acho)
+
+func _on_Correct_Player_finished():
+	correct_player.stop()
+
+func _on_Wrong_Player_finished():
+	wrong_player.stop()
