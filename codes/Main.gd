@@ -1,5 +1,7 @@
 extends Node2D
 
+const DEBUG = true
+
 onready var display = $TextDisplay
 onready var displayT = $TextDisplay/Timer
 onready var _pontos = $Pontuacao
@@ -11,9 +13,11 @@ onready var rng = RandomNumberGenerator.new()
 onready var _fulltime_player = $Constant_Player as AudioStreamPlayer2D
 onready var correct_player = $Correct_Player as AudioStreamPlayer2D
 onready var wrong_player = $Wrong_Player as AudioStreamPlayer2D
+var end = null
 
 const oCode = preload("res://scenes/Objeto_Base.tscn")
 const rCode = preload("res://scenes/Receptor_Base.tscn")
+const eScreen = preload("res://scenes/EndScreen.tscn")
 
 var animais = [ ]
 var spawned = [ ]
@@ -21,34 +25,34 @@ var tSpawned = [ ]
 var clicked = null
 var held = [ ]
 var pontos : int = 0
+var correct_placed : int = 0
 
 var first = true
 
-func randomPosSpawn( mult = 1 ):
-	var cc = sPecas.get_child_count()
-	var r = (rng.randi_range(0, cc * mult) + mult + cc )% cc
-	if not spawned[r]:
-		return r
-	var z = spawned[r]
-	var pPos = sPecas.get_child(r).position
-	if is_instance_valid(z) and z.position == pPos:
-		return randomPosSpawn( mult+1 )
-	spawned[r] = null
-	return r
+func get_next_empty(arr : = [0]) -> int:
+	for i in range(len(arr)):
+		if not i in arr:
+			return i
+	return -1
 
-func randomPosTabuleiro( mult = 1 ):
-	var cc = sTabuleiro.get_child_count()
-	var r = (rng.randi_range(0, cc * mult) + mult + cc )% cc
-	if not tSpawned[r]:
-		return r
-	var z = tSpawned[r]
-	var pPos = sTabuleiro.get_child(r).position
-	if is_instance_valid(z) and z.position == pPos:
-		return randomPosTabuleiro( mult+1 )
-	tSpawned[r] = null
+func __exists_in_held(opt := "obj", key : int = 0) -> bool:
+	for i in held:
+		if i == null:
+			continue
+		if i[opt] == key:
+			return true
+	return false
+
+func randPos(arr := [], opt := "obj", mult = 1) -> int:
+	var cc = len(arr)
+	var r : int = (rng.randi_range(0, cc * mult) + mult + cc) % cc
+	if __exists_in_held(opt, r):
+		return randPos(arr, opt, mult + 1)
+	arr[r] = get_next_empty(arr)
 	return r
 
 func _ready():
+	randomize()
 	var dir = Directory.new()
 	dir.open("res://animais/")
 	dir.list_dir_begin()
@@ -67,22 +71,30 @@ func _ready():
 	_fulltime_player.stream.loop = true
 	_fulltime_player.play()
 	
-	for _i in range(sTabuleiro.get_child_count()): # Making sure that the size of the array is iqual the ammount of "spawns"
-		spawned.append(null)
-		tSpawned.append(null)
+	var sTab = []
+	var sPeca = []
+	
+	for i in range(sTabuleiro.get_child_count()): # Making sure that the size of the array is iqual the ammount of "spawns"
+		sTab.append(i)
+		sPeca.append(i)
+		held.append(null)
+		#spawned.append(null)
+		#tSpawned.append(null)
+	
+	sTab.shuffle()
+	sPeca.shuffle()
+	animais.shuffle()
 	
 	var c = 0
 	
-	animais.shuffle()
-	animais.shuffle()
-	
 	while c < sTabuleiro.get_child_count():
-		var r = randomPosSpawn()
+		var r = randPos(sPeca, "obj")
 		var pPos = sPecas.get_child(r).position
 		var obj = oCode.instance()
 		pecas.add_child(obj)
 		
-		var t = randomPosTabuleiro()
+		#var t = randomPosTabuleiro()
+		var t = randPos(sTab, "sombra")
 		var sPos = sTabuleiro.get_child(t).position
 		var sombra = rCode.instance()
 		tabuleiro.add_child(sombra)
@@ -95,12 +107,14 @@ func _ready():
 		if not sombra.Deploy(sPos, i):
 			sombra.free()
 			continue
-		tSpawned[t] = sombra
-		spawned[r] = obj
+		#tSpawned[t] = sombra
+		#spawned[r] = obj
+		sPeca[r] = -1
+		sTab[t] = -1
 		obj.connect("placed", self, "set_object_placed")
 		obj.connect("object_taken", self, "set_object_taken")
 		obj.connect("object_released", self, "set_object_released")
-		held.append({ objeto = i, obj = r, sombra = t, total_held = 0, _start = -1 })
+		held[r] = { objeto = i, obj = r, sombra = t, total_held = 0, _start = -1 }
 		c+=1
 	
 	#dir.queue_free()
@@ -131,17 +145,37 @@ func set_display(texto):
 	display.self_modulate.a = 1
 	display.text = texto
 	displayT.start(5)
+	
 
 # warning-ignore:unused_argument
 func _process(delta):
+	if correct_placed == len(held):
+		_fulltime_player.volume_db -= .01
+	
 	if first:
 		return
 	display.self_modulate.a = displayT.time_left/5
+	
+	_pontos.self_modulate.a = displayT.time_left/5
+	
+	var text = end.get_node("EndGameText")
+	var bg = end.get_node("FadedBackground")
+	
+	text.self_modulate.a = 1 - (end.get_node("FadeInTimer").time_left)/5
+	bg.self_modulate.a = 1 - (end.get_node("FadeInTimer").time_left)/5
+	if bg.self_modulate.a == 1:
+		_fulltime_player.stop()
+	
 
 func _on_Timer_timeout():
 	if first:
 		first = false
 		displayT.start(5)
+		if end and correct_placed == len(held):
+			var ti = end.get_node("FadedBackground")
+			var t = end.get_node("FadeInTimer")
+			if ti.self_modulate.a == 0 and t.time_left == 0:
+				t.start(5)
 	else:
 		display.text = ""
 		first = true
@@ -188,14 +222,33 @@ func set_object_placed(objeto, shadow, correct):
 			if p < 10:
 				p = 10
 		
-		print(p, info.total_held)
-		
 		objeto.set_status("Connected")
 		objeto.position = shadow.position
 		correct_player.play(0.0)
 		
 		pontos += p
 		_pontos.text = str(pontos)+" pontos"
+		correct_placed += 1
+		if correct_placed == len(held):
+			end = eScreen.instance()
+			add_child_below_node($Listener, end)
+			
+			var font = DynamicFont.new()
+			font.font_data = load("res://fonts/8bitOperatorPlus8.ttf")
+			font.size = 96 * 2
+			
+			var end_text = end.get_node("EndGameText")
+			var bg = end.get_node("FadedBackground")
+			
+			end_text.self_modulate.a = 0
+			bg.self_modulate.a = 0
+			
+			end_text.add_font_override("font", font)
+			end_text.rect_scale = Vector2(0.5, 0.5)
+			end_text.rect_size *= 2
+			
+			end_text.text += "\n"+str(pontos)+" Pontos feitos."
+
 	else:
 		objeto.position = objeto.original_pos
 		wrong_player.play(0.66)
@@ -207,3 +260,9 @@ func _on_Correct_Player_finished():
 
 func _on_Wrong_Player_finished():
 	wrong_player.stop()
+
+func _input(event):
+	if not DEBUG:
+		return
+	if event.is_action_released("ui_accept"):
+		get_tree().reload_current_scene()

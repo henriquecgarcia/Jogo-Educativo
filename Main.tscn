@@ -35,7 +35,7 @@ text = "0"
 valign = 1
 uppercase = true
 
-[node name="SpawnTabuleiro" type="YSort" parent="."]
+[node name="SpawnTabuleiro" type="Node2D" parent="."]
 
 [node name="Position2D" type="Position2D" parent="SpawnTabuleiro"]
 position = Vector2( 218, 162 )
@@ -64,7 +64,7 @@ position = Vector2( 502, 407 )
 [node name="Position2D9" type="Position2D" parent="SpawnTabuleiro"]
 position = Vector2( 797, 410 )
 
-[node name="SpawnPecas" type="YSort" parent="."]
+[node name="SpawnPecas" type="Node2D" parent="."]
 
 [node name="Position2D" type="Position2D" parent="SpawnPecas"]
 position = Vector2( 75, 149 )
