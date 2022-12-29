@@ -36,15 +36,14 @@ func Deploy(pos, objName):
 	
 	collision.position = skin.position
 	
-	var spriteSize = skin.texture.get_size() * size * size * size
+	#var spriteSize = skin.texture.get_size() * size * size * size
 	#collision.shape.set_extents(spriteSize - Vector2(1, 1))
-	collision.shape.set_extents(spriteSize)
+	#collision.shape.set_extents(spriteSize)
 	
 	position = pos
 	return true
 
-# warning-ignore:unused_argument
-func _process(delta):
+func _process(_delta):
 	if canBlock and status != 0:
 		return
 	if Input.is_action_just_released("ui_mouse_click"):

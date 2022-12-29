@@ -13,5 +13,8 @@ script = ExtResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
+[node name="ChangeModel" type="Timer" parent="."]
+
 [connection signal="area_entered" from="." to="." method="_on_Receptor_Base_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_Receptor_Base_area_exited"]
+[connection signal="timeout" from="ChangeModel" to="." method="_on_ChangeModel_timeout"]

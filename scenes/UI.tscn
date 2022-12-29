@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://images/reiniciar_apertado.png" type="Texture" id=3]
+[ext_resource path="res://images/play.png" type="Texture" id=4]
+[ext_resource path="res://images/ajuda_apertado.png" type="Texture" id=5]
+[ext_resource path="res://images/ajuda.png" type="Texture" id=6]
+[ext_resource path="res://images/reiniciar.png" type="Texture" id=7]
+[ext_resource path="res://images/creditos.png" type="Texture" id=8]
+[ext_resource path="res://images/creditos_apertado.png" type="Texture" id=9]
+[ext_resource path="res://images/play_apertado.png" type="Texture" id=10]
+[ext_resource path="res://codes/UI.gd" type="Script" id=11]
+
+[node name="UI" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 11 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 308.0
+margin_top = 240.0
+margin_right = 716.0
+margin_bottom = 360.0
+
+[node name="Botoes" type="GridContainer" parent="."]
+margin_left = 320.0
+margin_top = 285.0
+margin_right = 714.0
+margin_bottom = 368.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 12
+columns = 10
+
+[node name="Jogar" type="TextureButton" parent="Botoes"]
+margin_right = 180.0
+margin_bottom = 168.0
+button_mask = 3
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 10 )
+stretch_mode = 2
+
+[node name="Ajuda" type="TextureButton" parent="Botoes"]
+margin_left = 192.0
+margin_right = 369.0
+margin_bottom = 168.0
+button_mask = 3
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 5 )
+stretch_mode = 2
+
+[node name="Reiniciar" type="TextureButton" parent="Botoes"]
+margin_left = 381.0
+margin_right = 565.0
+margin_bottom = 168.0
+button_mask = 3
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 3 )
+stretch_mode = 2
+
+[node name="Music" type="TextureButton" parent="Botoes"]
+margin_left = 577.0
+margin_right = 641.0
+margin_bottom = 168.0
+button_mask = 3
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 1 )
+stretch_mode = 2
+
+[node name="Credits" type="TextureButton" parent="Botoes"]
+margin_left = 653.0
+margin_right = 842.0
+margin_bottom = 168.0
+button_mask = 3
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 9 )
+stretch_mode = 2
+
+[node name="Text" type="Label" parent="."]
+margin_left = 311.0
+margin_top = 241.0
+margin_right = 712.0
+margin_bottom = 273.0
+text = "Menu de pause"
+align = 1
+valign = 1
+uppercase = true
+
+[connection signal="button_up" from="Botoes/Jogar" to="." method="_on_Jogar_button_up"]
+[connection signal="button_up" from="Botoes/Ajuda" to="." method="_on_Ajuda_button_up"]
+[connection signal="button_up" from="Botoes/Reiniciar" to="." method="_on_Reiniciar_button_up"]
+[connection signal="button_up" from="Botoes/Music" to="." method="_on_Music_button_up"]
+[connection signal="button_up" from="Botoes/Credits" to="." method="_on_Credits_button_up"]

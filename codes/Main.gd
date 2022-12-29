@@ -13,6 +13,10 @@ onready var rng = RandomNumberGenerator.new()
 onready var _fulltime_player = $Constant_Player as AudioStreamPlayer2D
 onready var correct_player = $Correct_Player as AudioStreamPlayer2D
 onready var wrong_player = $Wrong_Player as AudioStreamPlayer2D
+onready var ui = $UI as Control
+onready var pbutton = $Pause/Button
+onready var btn_pause = $Pause
+
 var end = null
 
 const oCode = preload("res://scenes/Objeto_Base.tscn")
@@ -53,6 +57,10 @@ func randPos(arr := [], opt := "obj", mult = 1) -> int:
 
 func _ready():
 	randomize()
+	ui.visible = false
+	btn_pause.visible = true
+	pbutton.rect_scale = Vector2(64, 64) / pbutton.rect_size
+	
 	var dir = Directory.new()
 	dir.open("res://animais/")
 	dir.list_dir_begin()
@@ -117,7 +125,8 @@ func _ready():
 		held[r] = { objeto = i, obj = r, sombra = t, total_held = 0, _start = -1 }
 		c+=1
 	
-	#dir.queue_free()
+	ui.scale_buttons()
+	
 	var font = DynamicFont.new()
 	font.font_data = load("res://fonts/8bitOperatorPlus8.ttf")
 	font.size = 96
@@ -157,6 +166,9 @@ func _process(delta):
 	display.self_modulate.a = displayT.time_left/5
 	
 	_pontos.self_modulate.a = displayT.time_left/5
+	
+	if not end:
+		return
 	
 	var text = end.get_node("EndGameText")
 	var bg = end.get_node("FadedBackground")
@@ -199,11 +211,14 @@ func set_object_released(objeto):
 	info.total_held += (Time.get_ticks_msec() - info._start)
 	info._start = -1
 
+var last_shadow_placed = null
+
 func set_object_placed(objeto, shadow, correct):
 	if correct_player.playing:
 		correct_player.stop()
 	if wrong_player.playing:
 		wrong_player.stop()
+	last_shadow_placed = shadow
 	if correct:
 		set_display(objeto.objeto)
 		var id = object_position(objeto.objeto)
@@ -229,6 +244,10 @@ func set_object_placed(objeto, shadow, correct):
 		pontos += p
 		_pontos.text = str(pontos)+" pontos"
 		correct_placed += 1
+		
+		if shadow.has_method("change_background"):
+			shadow.change_background("correct")
+		
 		if correct_placed == len(held):
 			end = eScreen.instance()
 			add_child_below_node($Listener, end)
@@ -248,12 +267,13 @@ func set_object_placed(objeto, shadow, correct):
 			end_text.rect_size *= 2
 			
 			end_text.text += "\n"+str(pontos)+" Pontos feitos."
-
 	else:
 		objeto.position = objeto.original_pos
 		wrong_player.play(0.66)
+		if shadow.has_method("change_background"):
+			shadow.change_background("wrong")
 
-# Tendo a certeza q vai parar de tocar (eu acho)
+# Tendo a certeza q vai parar de tocar (eu acho) e pra fazer a volta das models
 
 func _on_Correct_Player_finished():
 	correct_player.stop()
@@ -265,4 +285,13 @@ func _input(event):
 	if not DEBUG:
 		return
 	if event.is_action_released("ui_accept"):
+		# warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
+
+func toogle_pause():
+	ui.visible = not ui.visible
+	btn_pause.visible = not btn_pause.visible
+	get_tree().paused = not get_tree().paused
+
+func _on_Button_button_up():
+	toogle_pause()
