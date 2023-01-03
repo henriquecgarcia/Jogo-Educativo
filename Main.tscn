@@ -127,8 +127,10 @@ margin_bottom = 64.0
 [node name="Button" type="TextureButton" parent="Pause"]
 margin_right = 40.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 64, 64 )
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 7 )
+expand = true
 
 [node name="UI" parent="." instance=ExtResource( 6 )]
 

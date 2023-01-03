@@ -1,8 +1,13 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://images/reiniciar_apertado.png" type="Texture" id=1]
+[ext_resource path="res://images/reiniciar.png" type="Texture" id=2]
+[ext_resource path="res://codes/EndScreen.gd" type="Script" id=3]
 
 [node name="EndScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 3 )
 
 [node name="FadedBackground" type="ColorRect" parent="."]
 margin_right = 1024.0
@@ -19,10 +24,16 @@ valign = 1
 [node name="FadeInTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="TextureButton" type="TextureButton" parent="."]
-margin_left = 247.0
-margin_top = 457.0
-margin_right = 728.0
-margin_bottom = 497.0
+[node name="Restart" type="TextureButton" parent="."]
+margin_left = 267.0
+margin_top = 407.0
+margin_right = 748.0
+margin_bottom = 447.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 1 )
 expand = true
+stretch_mode = 3
+
+[connection signal="button_up" from="Restart" to="." method="_on_TextureButton_button_up"]
