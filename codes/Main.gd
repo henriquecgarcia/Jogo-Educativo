@@ -172,9 +172,11 @@ func _process(delta):
 	
 	var text = end.get_node("EndGameText")
 	var bg = end.get_node("FadedBackground")
+	var btn = end.get_node("Restart")
 	
 	text.self_modulate.a = 1 - (end.get_node("FadeInTimer").time_left)/5
 	bg.self_modulate.a = 1 - (end.get_node("FadeInTimer").time_left)/5
+	btn.self_modulate.a = 1 - (end.get_node("FadeInTimer").time_left)/5
 	if bg.self_modulate.a == 1:
 		_fulltime_player.stop()
 	
@@ -258,9 +260,11 @@ func set_object_placed(objeto, shadow, correct):
 			
 			var end_text = end.get_node("EndGameText")
 			var bg = end.get_node("FadedBackground")
+			var btn = end.get_node("Restart")
 			
 			end_text.self_modulate.a = 0
 			bg.self_modulate.a = 0
+			btn.self_modulate.a = 0
 			
 			end_text.add_font_override("font", font)
 			end_text.rect_scale = Vector2(0.5, 0.5)

@@ -9,12 +9,14 @@ func scale_buttons():
 		pbutton.rect_scale = Vector2(64, 64) / pbutton.rect_size
 		pbutton.rect_size = Vector2(64, 64)
 
+func _ready():
+	scale_buttons()
+
 func printInoperante():
 	print("Botão inoperante :P")
 
 func _on_Jogar_button_up():
 	var main = get_tree().get_current_scene()
-	print(main)
 	main.toogle_pause()
 
 func _on_Ajuda_button_up():

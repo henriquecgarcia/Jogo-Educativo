@@ -24,57 +24,62 @@ margin_right = 716.0
 margin_bottom = 360.0
 
 [node name="Botoes" type="GridContainer" parent="."]
-margin_left = 320.0
-margin_top = 285.0
-margin_right = 714.0
-margin_bottom = 368.0
+margin_left = 327.0
+margin_top = 278.0
+margin_right = 721.0
+margin_bottom = 361.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 12
-columns = 10
+columns = 5
 
 [node name="Jogar" type="TextureButton" parent="Botoes"]
-margin_right = 180.0
-margin_bottom = 168.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 10 )
-stretch_mode = 2
+expand = true
 
 [node name="Ajuda" type="TextureButton" parent="Botoes"]
-margin_left = 192.0
-margin_right = 369.0
-margin_bottom = 168.0
+margin_left = 76.0
+margin_right = 140.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 5 )
-stretch_mode = 2
+expand = true
 
 [node name="Reiniciar" type="TextureButton" parent="Botoes"]
-margin_left = 381.0
-margin_right = 565.0
-margin_bottom = 168.0
+margin_left = 152.0
+margin_right = 216.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
 texture_normal = ExtResource( 7 )
 texture_pressed = ExtResource( 3 )
-stretch_mode = 2
+expand = true
 
 [node name="Music" type="TextureButton" parent="Botoes"]
-margin_left = 577.0
-margin_right = 641.0
-margin_bottom = 168.0
+margin_left = 228.0
+margin_right = 292.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
 texture_normal = ExtResource( 1 )
 texture_pressed = ExtResource( 1 )
 stretch_mode = 2
 
 [node name="Credits" type="TextureButton" parent="Botoes"]
-margin_left = 653.0
-margin_right = 842.0
-margin_bottom = 168.0
+margin_left = 304.0
+margin_right = 368.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 button_mask = 3
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 9 )
-stretch_mode = 2
+expand = true
 
 [node name="Text" type="Label" parent="."]
 margin_left = 311.0
