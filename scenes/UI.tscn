@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://images/voltar.png" type="Texture" id=2]
 [ext_resource path="res://images/reiniciar_apertado.png" type="Texture" id=3]
 [ext_resource path="res://images/play.png" type="Texture" id=4]
 [ext_resource path="res://images/ajuda_apertado.png" type="Texture" id=5]
@@ -10,6 +11,7 @@
 [ext_resource path="res://images/creditos_apertado.png" type="Texture" id=9]
 [ext_resource path="res://images/play_apertado.png" type="Texture" id=10]
 [ext_resource path="res://codes/UI.gd" type="Script" id=11]
+[ext_resource path="res://images/voltar_apertado.png" type="Texture" id=12]
 
 [node name="UI" type="Control"]
 pause_mode = 2
@@ -91,8 +93,20 @@ align = 1
 valign = 1
 uppercase = true
 
+[node name="Voltar" type="TextureButton" parent="."]
+margin_left = 680.0
+margin_top = 225.0
+margin_right = 730.0
+margin_bottom = 275.0
+rect_min_size = Vector2( 32, 32 )
+button_mask = 3
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 12 )
+expand = true
+
 [connection signal="button_up" from="Botoes/Jogar" to="." method="_on_Jogar_button_up"]
 [connection signal="button_up" from="Botoes/Ajuda" to="." method="_on_Ajuda_button_up"]
 [connection signal="button_up" from="Botoes/Reiniciar" to="." method="_on_Reiniciar_button_up"]
 [connection signal="button_up" from="Botoes/Music" to="." method="_on_Music_button_up"]
 [connection signal="button_up" from="Botoes/Credits" to="." method="_on_Credits_button_up"]
+[connection signal="button_up" from="Voltar" to="." method="_on_Jogar_button_up"]

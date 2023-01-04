@@ -165,10 +165,10 @@ func _process(delta):
 		return
 	display.self_modulate.a = displayT.time_left/5
 	
-	_pontos.self_modulate.a = displayT.time_left/5
-	
 	if not end:
 		return
+	
+	_pontos.self_modulate.a = displayT.time_left/5
 	
 	var text = end.get_node("EndGameText")
 	var bg = end.get_node("FadedBackground")
@@ -229,9 +229,9 @@ func set_object_placed(objeto, shadow, correct):
 		var info = held[id]
 		var p = info.total_held
 		
-		if p <= 30*1000:
+		if p <= 15*1000:
 			p = 100
-		elif p <= 60*1000:
+		elif p <= 30*1000:
 			p = 75
 		else:
 			p = int(p/1000)
