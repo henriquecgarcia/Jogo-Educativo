@@ -30,6 +30,7 @@ var clicked = null
 var held = [ ]
 var pontos : int = 0
 var correct_placed : int = 0
+var curMuteStats : bool = false
 
 var first = true
 
@@ -76,8 +77,11 @@ func _ready():
 	
 	wrong_player.stream.loop = false
 	correct_player.stream.loop = false
-	_fulltime_player.stream.loop = true
 	_fulltime_player.play()
+	
+	# warning-ignore:return_value_discarded
+	Settings.connect("music_stats_changed", self, "toogle_background_music")
+	curMuteStats = Settings.MusicStats
 	
 	var sTab = []
 	var sPeca = []
@@ -86,8 +90,6 @@ func _ready():
 		sTab.append(i)
 		sPeca.append(i)
 		held.append(null)
-		#spawned.append(null)
-		#tSpawned.append(null)
 	
 	sTab.shuffle()
 	sPeca.shuffle()
@@ -101,7 +103,6 @@ func _ready():
 		var obj = oCode.instance()
 		pecas.add_child(obj)
 		
-		#var t = randomPosTabuleiro()
 		var t = randPos(sTab, "sombra")
 		var sPos = sTabuleiro.get_child(t).position
 		var sombra = rCode.instance()
@@ -115,8 +116,6 @@ func _ready():
 		if not sombra.Deploy(sPos, i):
 			sombra.free()
 			continue
-		#tSpawned[t] = sombra
-		#spawned[r] = obj
 		sPeca[r] = -1
 		sTab[t] = -1
 		obj.connect("placed", self, "set_object_placed")
@@ -144,6 +143,12 @@ func _ready():
 	
 	_pontos.text = str(pontos)+" pontos"
 
+func toogle_background_music(new_val):
+	if new_val:
+		_fulltime_player.play()
+	else:
+		_fulltime_player.stop()
+
 func object_position(obj = "Nenhum") -> int:
 	for i in range(len(held)):
 		if held[i].objeto == obj:
@@ -154,10 +159,15 @@ func set_display(texto):
 	display.self_modulate.a = 1
 	display.text = texto
 	displayT.start(5)
-	
 
-# warning-ignore:unused_argument
-func _process(delta):
+func _process(_delta):
+	if curMuteStats != Settings.MusicStats:
+		curMuteStats = Settings.MusicStats
+		if curMuteStats:
+			_fulltime_player.play()
+		else:
+			_fulltime_player.stop()
+	
 	if correct_placed == len(held):
 		_fulltime_player.volume_db -= .01
 	
@@ -241,7 +251,8 @@ func set_object_placed(objeto, shadow, correct):
 		
 		objeto.set_status("Connected")
 		objeto.position = shadow.position
-		correct_player.play(0.0)
+		if Settings.SoundStats:
+			correct_player.play(0.0)
 		
 		pontos += p
 		_pontos.text = str(pontos)+" pontos"
@@ -273,7 +284,8 @@ func set_object_placed(objeto, shadow, correct):
 			end_text.text += "\n"+str(pontos)+" Pontos feitos."
 	else:
 		objeto.position = objeto.original_pos
-		wrong_player.play(0.66)
+		if Settings.SoundStats:
+			wrong_player.play(0.66)
 		if shadow.has_method("change_background"):
 			shadow.change_background("wrong")
 
@@ -299,3 +311,7 @@ func toogle_pause():
 
 func _on_Button_button_up():
 	toogle_pause()
+
+func _on_Constant_Player_finished():
+	if Settings.MusicStats:
+		_fulltime_player.play()

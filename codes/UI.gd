@@ -1,6 +1,13 @@
 extends Control
 
 onready var botoes = $Botoes
+onready var music = $Botoes/Music
+onready var musicStats = not Settings.MusicStats
+
+const muted_pressed = preload("res://images/musica_mutado_apertado.png")
+const muted_normal = preload("res://images/musica_mutado.png")
+const playing_press = preload("res://images/musica_apertado.png")
+const playing_norm = preload("res://images/musica.png")
 
 func scale_buttons():
 	for pbutton in botoes.get_children():
@@ -28,7 +35,17 @@ func _on_Reiniciar_button_up():
 	get_tree().reload_current_scene()
 
 func _on_Music_button_up():
-	printInoperante()
+	Settings.MusicStats = musicStats
+	musicStats = not musicStats
+	if musicStats:
+		music.texture_normal = muted_normal
+		music.texture_pressed = muted_pressed
+	else:
+		music.texture_normal = playing_norm
+		music.texture_pressed = playing_press
+
+const cCode = preload("res://scenes/Credits.tscn")
 
 func _on_Credits_button_up():
-	printInoperante()
+	var cred = cCode.instance()
+	add_child(cred)
