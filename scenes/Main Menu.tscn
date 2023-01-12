@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://images/creditos.png" type="Texture" id=1]
+[ext_resource path="res://images/musica_apertado.png" type="Texture" id=2]
+[ext_resource path="res://images/musica.png" type="Texture" id=3]
+[ext_resource path="res://images/play.png" type="Texture" id=4]
+[ext_resource path="res://Tabuleiro_v2.2.png" type="Texture" id=5]
+[ext_resource path="res://images/creditos_apertado.png" type="Texture" id=6]
+[ext_resource path="res://images/play_apertado.png" type="Texture" id=7]
+[ext_resource path="res://codes/Main Menu.gd" type="Script" id=8]
+[ext_resource path="res://images/fechar.png" type="Texture" id=9]
+[ext_resource path="res://images/fechar_apertado.png" type="Texture" id=10]
+
+[node name="Main Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 8 )
+
+[node name="Sprite" type="TextureRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 488.0
+margin_top = 96.0
+margin_right = 904.0
+margin_bottom = 480.0
+columns = 2
+
+[node name="Play" type="TextureButton" parent="GridContainer"]
+margin_right = 189.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 189, 168 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 7 )
+
+[node name="Sair" type="TextureButton" parent="GridContainer"]
+margin_left = 193.0
+margin_right = 388.0
+margin_bottom = 168.0
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 10 )
+
+[node name="Creditos" type="TextureButton" parent="GridContainer"]
+margin_top = 172.0
+margin_right = 189.0
+margin_bottom = 337.0
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 6 )
+
+[node name="StopMusic" type="TextureButton" parent="GridContainer"]
+margin_left = 193.0
+margin_top = 172.0
+margin_right = 388.0
+margin_bottom = 337.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 2 )
+
+[node name="Nome" type="Label" parent="."]
+margin_left = 112.0
+margin_top = 40.0
+margin_right = 912.0
+margin_bottom = 88.0
+text = "Encontre o Igual"
+align = 1
+valign = 1
+uppercase = true
+
+[connection signal="button_up" from="GridContainer/Play" to="." method="_on_Play_button_up"]
+[connection signal="button_up" from="GridContainer/Sair" to="." method="_on_Sair_button_up"]
+[connection signal="button_up" from="GridContainer/Creditos" to="." method="_on_Creditos_button_up"]
+[connection signal="button_up" from="GridContainer/StopMusic" to="." method="_on_StopMusic_button_up"]

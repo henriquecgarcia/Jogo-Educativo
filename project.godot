@@ -11,8 +11,13 @@ config_version=4
 [application]
 
 config/name="Jogo Educativo"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://scenes/Main Menu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Settings="*res://codes/settings.gd"
+Credits="*res://codes/Credits.gd"
 
 [global]
 
