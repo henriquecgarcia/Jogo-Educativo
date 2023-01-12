@@ -103,7 +103,6 @@ position = Vector2( 189, 522 )
 [node name="Constant_Player" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
 volume_db = -10.123
-autoplay = true
 
 [node name="Wrong_Player" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
@@ -135,6 +134,7 @@ expand = true
 [node name="UI" parent="." instance=ExtResource( 6 )]
 
 [connection signal="timeout" from="TextDisplay/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="finished" from="Constant_Player" to="." method="_on_Constant_Player_finished"]
 [connection signal="finished" from="Wrong_Player" to="." method="_on_Wrong_Player_finished"]
 [connection signal="finished" from="Correct_Player" to="." method="_on_Correct_Player_finished"]
 [connection signal="button_up" from="Pause/Button" to="." method="_on_Button_button_up"]
