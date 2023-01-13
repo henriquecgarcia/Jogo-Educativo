@@ -1,6 +1,7 @@
 extends Control
 
 onready var title = $Nome
+onready var expl = $Explicacao
 
 const cCode = preload("res://scenes/Credits.tscn")
 
@@ -12,6 +13,8 @@ func _ready():
 	title.add_font_override("font", font)
 	title.rect_scale = Vector2(0.5, 0.5)
 	title.rect_size *= 2
+	
+	
 
 func _on_Play_button_up():
 	if get_tree().change_scene("res://Main.tscn"):

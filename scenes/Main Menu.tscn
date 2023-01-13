@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://images/creditos.png" type="Texture" id=1]
 [ext_resource path="res://images/musica_apertado.png" type="Texture" id=2]
@@ -10,13 +10,20 @@
 [ext_resource path="res://codes/Main Menu.gd" type="Script" id=8]
 [ext_resource path="res://images/fechar.png" type="Texture" id=9]
 [ext_resource path="res://images/fechar_apertado.png" type="Texture" id=10]
+[ext_resource path="res://fonts/Roboto-Medium.ttf" type="DynamicFontData" id=11]
+
+[sub_resource type="DynamicFont" id=1]
+size = 36
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 11 )
 
 [node name="Main Menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 8 )
 
-[node name="Sprite" type="TextureRect" parent="."]
+[node name="Table" type="TextureRect" parent="."]
 margin_right = 1024.0
 margin_bottom = 600.0
 texture = ExtResource( 5 )
@@ -67,6 +74,18 @@ text = "Encontre o Igual"
 align = 1
 valign = 1
 uppercase = true
+
+[node name="Explicacao" type="Label" parent="."]
+margin_left = 120.0
+margin_top = 96.0
+margin_right = 472.0
+margin_bottom = 472.0
+custom_fonts/font = SubResource( 1 )
+text = "Objetivo do jogo:
+Encaixe o objeto no buraco correto, com o minimo de erro possível e no menor tempo possível, Todo segundo conta!"
+align = 1
+valign = 1
+autowrap = true
 
 [connection signal="button_up" from="GridContainer/Play" to="." method="_on_Play_button_up"]
 [connection signal="button_up" from="GridContainer/Sair" to="." method="_on_Sair_button_up"]
